@@ -1,1 +1,5 @@
-// write your server here
+import App from './App';
+
+const app = new App();
+
+app.init('3001');
