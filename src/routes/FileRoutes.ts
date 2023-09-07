@@ -1,13 +1,15 @@
 import { Router } from 'express';
 import FileController from '../controllers/FileController';
-import multer from 'multer';
+import multerConfig from '../config/multerConfig';
+import FileService from '../services/FileService';
+import Client from '../Client';
 
-const multerconfig = multer();
-
-const controller = new FileController();
+const client = new Client();
+const service = new FileService(client);
+const controller = new FileController(service);
 
 const route = Router();
 
-route.post('/', multerconfig.single('file'), controller.validate);
+route.post('/', multerConfig.single('file'), controller.validate);
 
 export default route;
