@@ -16,4 +16,12 @@ export default class FileController {
 
     res.status(400).json({ message: 'Bad Request' });
   };
+
+  public update: RequestHandler = async (_req, res) => {
+    const { result, message } = await this._service.update();
+
+    if (message) return res.status(400).json({ message });
+
+    res.status(200).json(result);
+  };
 }
