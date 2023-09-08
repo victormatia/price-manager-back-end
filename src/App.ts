@@ -32,5 +32,6 @@ export default class App {
     this._server.get('/', serverSucces);
 
     this._server.use('/validate', fileRoute);
+    this._server.use('/update', fileRoute);
   }
 }
