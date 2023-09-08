@@ -1,7 +1,6 @@
 import Client from '../Client';
-import { Readable } from 'stream';
-import * as readline from 'readline/promises';
 import { validatePrice } from '../utils/validatePrice';
+import convertFile from '../utils/convertFIle';
 
 export default class FileService {
   constructor(private _client: Client) {
@@ -9,7 +8,7 @@ export default class FileService {
   }
 
   public async validate(buffer: Buffer) {
-    const [, ...lines] = await this.convertFile(buffer);
+    const [, ...lines] = await convertFile(buffer);
 
     // On
     const areValidPrices = await Promise.all(lines.map(async (line: string[]) => {
@@ -24,23 +23,5 @@ export default class FileService {
     })); 
 
     return { result: [...areValidPrices] };
-  }
-
-  private async convertFile(buffer: Buffer) {
-    const readableFile = new Readable();
-
-    readableFile.push(buffer);
-    readableFile.push(null);
-
-    const fileLines = readline.createInterface({input: readableFile});
-
-    const arrLines = [];
-
-    // On
-    for await(const line of fileLines) {
-      arrLines.push(line.split(','));
-    }
-
-    return arrLines;
   }
 }
