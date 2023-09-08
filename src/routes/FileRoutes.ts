@@ -14,4 +14,6 @@ const route = Router();
 
 route.post('/', multerConfig.single('file'), middleware.validate, controller.validate);
 
+route.put('/', controller.update);
+
 export default route;
