@@ -11,7 +11,7 @@ export default class FileController {
     if (buffer) {
       const { result } = await this._service.validate(buffer);
 
-      return res.status(200).json(result);
+      return res.status(203).json(result);
     }
 
     res.status(400).json({ message: 'Bad Request' });
