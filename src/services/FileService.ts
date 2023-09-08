@@ -12,18 +12,18 @@ export default class FileService {
     const [, ...lines] = await this.convertFile(buffer);
 
     // On
-    const messages = await Promise.all(lines.map(async (line: string[]) => {
+    const areValidPrices = await Promise.all(lines.map(async (line: string[]) => {
       const [product] = await this._client.getProducts({code: line[0]});
       const newPrice = Number(line[1]);
       const cost = Number(product.cost_price);
       const salesPrice = Number(product.sales_price);
 
-      const { message } = validatePrice(newPrice, { cost, salesPrice });
-      return { productCode: Number(product.code), message };
+      const { isValid, message } = validatePrice(newPrice, { cost, salesPrice });
+      return { productCode: Number(product.code), isValid, message };
         
     })); 
 
-    return { result: {...messages} };
+    return { result: [...areValidPrices] };
   }
 
   private async convertFile(buffer: Buffer) {
