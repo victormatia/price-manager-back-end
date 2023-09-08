@@ -19,6 +19,11 @@ export default class FileService {
     // On
     const areValidPrices = await Promise.all(lines.map(async (line: string[]) => {
       const [product] = await this._client.getProducts({code: line[0]});
+      
+      if (!product) {
+        return { productCode: line[0], isValid: false, message: 'Produto não encontrado' };
+      }
+
       const newPrice = Number(line[1]);
       const cost = Number(product.cost_price);
       const salesPrice = Number(product.sales_price);
@@ -41,9 +46,16 @@ export default class FileService {
 
       const productsUpdated = {sales_price: newPrice as Decimal} as products;
 
+      const [product] = await this._client.getProducts({code: line[0]});
+
       const {code, cost_price, name, sales_price} = await this._client.updateProduct({code: line[0]}, productsUpdated);
 
-      return { code: Number(code), 'cost_price': Number(cost_price), name, 'sales_price': Number(sales_price) };
+      return { 
+        code: Number(code),
+        'cost_price': Number(cost_price),
+        name, 'sales_price': Number(product.sales_price),
+        'new_sales_price': Number(sales_price), 
+      };
     }));
 
     return { result };
