@@ -1,5 +1,5 @@
 FROM node:18.16.0
-WORKDIR /price-manager-backend
+WORKDIR /price-manager-back-end
 COPY package.json .
 RUN npm install
 COPY . .
