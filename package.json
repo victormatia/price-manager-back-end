@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "npm run build && node ./build/server.js",
     "dev": "tsnd --respawn --transpile-only src/server.ts",
+    "generate": "npx prisma generate",
     "migrate": "npx prisma migrate dev"
   },
   "keywords": [],
